@@ -265,9 +265,8 @@ class JevRouter:
             raise ValueError("JEV task cannot be empty.")
         env = os.environ.copy()
         env["TYPESAFE_PROFILE"] = self.profile
-        command = subprocess.list2cmdline([str(self.runner), "route", task])
         result = subprocess.run(
-            ["cmd.exe", "/d", "/s", "/c", command],
+            [str(self.runner), "route", task],
             cwd=self.root,
             env=env,
             capture_output=True,

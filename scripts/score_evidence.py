@@ -9,7 +9,7 @@ from jev_orbita import MissionEvidence, Recovery, evaluate_score
 
 
 def load_evidence(path: Path) -> MissionEvidence:
-    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload = json.loads(path.read_text(encoding="utf-8-sig"))
     recoveries = tuple(Recovery(**item) for item in payload.pop("recoveries", []))
     return MissionEvidence(recoveries=recoveries, **payload)
 
