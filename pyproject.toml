@@ -1,0 +1,9 @@
+[project]
+name = "jev-orbita"
+version = "0.1.0"
+description = "Pre-start engineering harness for BuildArena S02 autonomous iteration."
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.ruff]
+line-length = 100
