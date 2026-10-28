@@ -159,7 +159,18 @@ Regenerate the figures: `PYTHONPATH=src python docs/make_figures.py`.
 
 ## Status and roadmap
 
-- [x] Rules, deadline and clarifications verified (deadline 2026-11-14 AOE = 2026-11-15 01:00 CET)
+**28 October check:** the account is entered on Kaggle, but Besiege is absent
+from the configured Steam libraries and the official setup report is missing.
+No valid mission, telemetry, game score or final submission is claimed.
+The three planned mission experiments remain blocked on that environment;
+the 14 framework/scorer tests are not substitutes for game experiments.
+
+The authenticated Kaggle API gives the exact cutoff **15 November 00:00 UTC
+(01:00 Madrid)**. The overview separately says 14 November AoE. These differ;
+use the earlier API cutoff until the organiser reconciles them. Do not convert
+the AoE wording to 01:00 CET.
+
+- [x] Rules checked; exact API cutoff recorded above, AoE discrepancy retained
 - [x] Scorer validated against the Rules' reference values
 - [x] Isolated Autopilot launcher, transcript converter and packager
 - [ ] Official setup and reproduction of the official `rocket_orbit_return` example (second scorer check)
@@ -168,10 +179,9 @@ Regenerate the figures: `PYTHONPATH=src python docs/make_figures.py`.
 
 ## Known limitations
 
-As in any engineering project there are a few open points, none of which affect the design:
-the official S02 scorer and recovery detector have not yet been published, so our scorer is
-validated against the printed Rules (and will be cross-checked against the official release
-when available); the evidence-level scorer takes per-machine integrity and stable time as
+The official setup and mission reproduction remain blocking checks. This scorer
+has been validated against the printed Rules; its agreement with the current
+official release still needs to be demonstrated. The evidence-level scorer takes per-machine integrity and stable time as
 measured inputs rather than recomputing them from raw block telemetry; and full engineering
 runs need a licensed Windows installation of Besiege, so they are reproducible only in the
 official environment.
