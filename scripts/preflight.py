@@ -5,12 +5,14 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDARENA = Path(os.environ.get("ORBITA_BUILDARENA_ROOT", r"E:\Proyecto-concursos\BuildArena-S02"))
 JEV = Path(os.environ.get("ORBITA_JEV_ROOT", r"E:\TartanIMU-Cognitive-Stack"))
 PROFILE = os.environ.get("ORBITA_JEV_PROFILE", "agnuxo")
+JEV_BRIDGE = Path(os.environ.get('ORBITA_JEV_BRIDGE', r'D:\PROJECTS\.cognition\jev_health_bridge.py'))
 
 
 def setup_status() -> tuple[bool, str]:
@@ -26,6 +28,16 @@ def setup_status() -> tuple[bool, str]:
 
 
 def jev_status() -> tuple[bool, str]:
+    if JEV_BRIDGE.is_file():
+        result = subprocess.run([sys.executable, str(JEV_BRIDGE), 'v2-probe'],
+                                capture_output=True, text=True, encoding='utf-8',
+                                errors='replace', timeout=30, check=False)
+        try:
+            payload = json.loads(result.stdout)
+        except json.JSONDecodeError:
+            return False, 'JEV bridge returned an invalid response; diagnostic suppressed.'
+        ok = result.returncode == 0 and payload.get('status') == 'connected' and payload.get('provenance') == 'jev'
+        return ok, 'JEV remote provenance verified.' if ok else 'JEV remote provenance not verified.'
     doctor = JEV / "connect_jev.bat"
     if not doctor.is_file():
         return False, "JEV v4 connector is missing."
@@ -93,7 +105,7 @@ def main() -> int:
         ("besiege_s02_environment", besiege_ok, besiege_note),
         ("project_on_e", ROOT.drive.casefold() == "e:", str(ROOT)),
         ("buildarena_exists", BUILDARENA.is_dir(), str(BUILDARENA)),
-        ("jev_exists", JEV.is_dir(), str(JEV)),
+        ("jev_exists", JEV.is_dir() or JEV_BRIDGE.is_file(), 'Configured connector or validated bridge'),
         ("uv_available", shutil.which("uv") is not None, shutil.which("uv") or "missing"),
         ("buildarena_setup", setup_ok, setup_note),
         ("jev_ready", jev_ok, jev_note),
