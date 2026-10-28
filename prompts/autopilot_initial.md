@@ -20,6 +20,6 @@ For every experiment, record configuration, code revision, telemetry path, missi
 
 Use JEV v4 only at meaningful semantic checkpoints: initial routing, a changed failure mode, model-tier escalation, major architecture change, and the final completion gate. Follow LUNA-FIRST. Escalate to Sol only after observable Luna insufficiency and to Astra only after an attempted but insufficient Sol result. Keep deterministic calculations, scoring, safety gates, and exact validation outside the language model.
 
-The final real-time controller should remain lightweight and accelerator-independent. If offline learning or surrogate fitting becomes materially useful, prefer TPU first, then Google Colab, and use the local RTX 3090 only as the last resort.
+The final real-time controller should remain lightweight and accelerator-independent. Simulations run in the official Windows environment; offline analysis of exported telemetry (fits, sweeps, statistics) is plain Python. Repeat every candidate configuration at least three times and report mean and standard deviation; keep experiments/LOG.md and experiments/experiments.csv up to date, including negative results.
 
 Before completion, reproduce the final mission from a clean start using the required one-command control workflow, verify every required submission artifact, and run a compliance audit. Do not claim an official score or rank until the organizer has accepted and scored the submission.

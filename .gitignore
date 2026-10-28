@@ -6,3 +6,7 @@ __pycache__/
 _tmp/
 runs/
 engineering_sessions/
+evidence/
+.claude-agent/
+submission/
+package/
