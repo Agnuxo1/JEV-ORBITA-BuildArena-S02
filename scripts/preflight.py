@@ -49,6 +49,32 @@ def jev_status() -> tuple[bool, str]:
     return payload.get("status") == "ready", f"JEV profile {PROFILE}: {payload.get('status', 'unknown')}"
 
 
+BESIEGE_APP, BUILD_ID, TOOLKIT_ID = "346010", "25434581", "3795335349"
+DLC_IDS = {"2165710": "The Splintered Sea", "3639470": "The Broken Beyond"}
+STEAM_LIBRARIES = [
+    Path(p) for p in os.environ.get(
+        "ORBITA_STEAM_LIBRARIES",
+        r"C:\Program Files (x86)\Steam\steamapps;D:\Steam-Villa-QA-20261016\steamapps;E:\SteamLibrary\steamapps",
+    ).split(";") if p
+]
+
+
+def besiege_status() -> tuple[bool, str]:
+    """Rule 5.2 environment: Besiege build 25434581, both DLC, ToolKit downloaded."""
+    for lib in STEAM_LIBRARIES:
+        manifest = lib / f"appmanifest_{BESIEGE_APP}.acf"
+        if not manifest.is_file():
+            continue
+        text = manifest.read_text(encoding="utf-8", errors="replace")
+        missing = [name for app, name in DLC_IDS.items() if f'"{app}"' not in text]
+        toolkit = (lib / "workshop" / "content" / BESIEGE_APP / TOOLKIT_ID).is_dir()
+        build_ok = f'"buildid"\t\t"{BUILD_ID}"' in text
+        ok = build_ok and not missing and toolkit
+        return ok, (f"{manifest}: build {'ok' if build_ok else 'differs from ' + BUILD_ID}; "
+                    f"DLC missing: {missing or 'none'}; ToolKit {'present' if toolkit else 'missing'}")
+    return False, "Besiege (app 346010) is not installed in any configured Steam library."
+
+
 def prebuilt_artifacts() -> list[str]:
     forbidden = {"trajectory.csv", "machine.bsg", "machine_raw.bsg", "machine_tuned.bsg"}
     return sorted(
@@ -62,7 +88,9 @@ def main() -> int:
     setup_ok, setup_note = setup_status()
     jev_ok, jev_note = jev_status()
     artifacts = prebuilt_artifacts()
+    besiege_ok, besiege_note = besiege_status()
     checks = [
+        ("besiege_s02_environment", besiege_ok, besiege_note),
         ("project_on_e", ROOT.drive.casefold() == "e:", str(ROOT)),
         ("buildarena_exists", BUILDARENA.is_dir(), str(BUILDARENA)),
         ("jev_exists", JEV.is_dir(), str(JEV)),

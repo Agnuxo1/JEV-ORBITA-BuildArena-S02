@@ -1,0 +1,3 @@
+id,date,hypothesis,configuration,commit,metric,decision
+E000,2026-10-28,"Local scorer reproduces Rules 10.6 A(d) table and 10.7 worked example","unittest tests/test_rules_reference.py; tolerance 0.0006 (table printed to 3 decimals)",pre-release,"A(d) 6/6 within tolerance; example 10.7 Recovery=18.000 Landing=24.000 exact; 14/14 tests pass",accepted
+E001,2026-10-28,"Local PC satisfies official S02 environment (Rules 5.2)","scripts/preflight.py",pre-release,"6/8 checks pass; blocked: Besiege 346010 not installed, DLC 2165710/3639470 and ToolKit 3795335349 missing, no setup report",rejected (prerequisites)
