@@ -34,6 +34,10 @@ and every number is produced by deterministic, unit-tested code rather than by a
 > controller, trajectory and transcript are published here after the submission deadline
 > (2026-11-14 AOE).
 
+<!-- impact-note:start -->
+<sub><strong>Efficiency and practical value.</strong> Deterministic scoring, telemetry gates and a reproducible search ledger make simulated vehicle design easier to compare and audit than ad hoc trial records. The <a href="#architecture">engineering framework</a> includes fuel-efficiency and hardware-recovery objectives, repeated candidate evaluation and verified submission packaging. These mechanisms can focus future search on useful designs; the repository has no validated mission result from which to infer actual fuel, material or emissions savings.</sub>
+<!-- impact-note:end -->
+
 ## Highlights
 
 | | |
